@@ -27,6 +27,14 @@ PERSONAL_LIST_IS_EMPTY_MESSAGE = "Your list of trains is empty! Add some by typi
 SECONDS_SINCE_LAST_UPDATE_MESSAGE = "Seconds since last update: {0}"
 USER_TRAINS_NOT_FOUND_MESSAGE = """Could not find any data on trains from your list.
 Maybe they're not off-schedule now?"""
+TRAIN_ADDED_MESSAGE = "Train {0} has been added to your personal list"
+TRAIN_DELETED_MESSAGE = "Train {0} has been deleted from your personal list"
+TRAIN_NOT_ON_LIST_MESSAGE = "Train {0} is not in your personal list"
+TO_DELETE_INFO_MESSAGE = "To delete a train from your list, press the respective /delXXXXX link"
+FULL_TABLE_HEADER = "Full table"
+PERSONAL_TABLE_HEADER = "Your personal table"
+
+UNKNOWN_COMMAND_MESSAGE = "Unknown command!"
 
 ################
 ### BUTTONS#####
@@ -44,9 +52,9 @@ GET_USER_TRAINS_DELAYS_BUTTON = "Get delays for my trains"
 # BIG TEXTS#######
 ##################
 
-ABOUT_MESSAGE = """*Random Picture Bot*
+ABOUT_MESSAGE = """*Stockholm train delays bot*
 _Created by:_ Highstaker a.k.a. OmniSable.
-Source: https://github.com/Highstaker/Picture-sender-telegram-bot
+Source: https://github.com/Highstaker/Train-delays-bot
 Version: {0}
 This bot uses the python-telegram-bot library.
 https://github.com/leandrotoledo/python-telegram-bot

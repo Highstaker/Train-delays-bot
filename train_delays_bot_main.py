@@ -5,10 +5,11 @@
 from python_version_check import check_version
 check_version((3, 4, 3))
 
-VERSION_NUMBER = (0, 0, 2)
+VERSION_NUMBER = (0, 0, 3)
 
 from time import time
 import re
+from datetime import datetime
 
 from telegramHigh import TelegramHigh
 from textual_data import *
@@ -87,7 +88,10 @@ class MainBot:
 
 			if table:
 				since_last_update = time()-self.last_update_time
-				msg = table + "\n" + lS(SECONDS_SINCE_LAST_UPDATE_MESSAGE).format(int(since_last_update))
+				msg = (PERSONAL_TABLE_HEADER if user else FULL_TABLE_HEADER) + "\n" \
+				+ "Current time: " + datetime.now().strftime("%H:%M") + "\n\n" \
+				+ table \
+				+ "\n" + lS(SECONDS_SINCE_LAST_UPDATE_MESSAGE).format(int(since_last_update))
 			else:
 				msg = lS(USER_TRAINS_NOT_FOUND_MESSAGE)
 
@@ -127,7 +131,8 @@ class MainBot:
 		elif message == "/mylist" or message == lS(GET_USER_TRAINS_LIST_BUTTON):
 			trains = subs.getEntry(chat_id,"trains")
 			if trains:
-				msg = lS(PERSONAL_LIST_MESSAGE) + "\n" + "\n".join(trains)
+				msg = lS(PERSONAL_LIST_MESSAGE) + "\n" + "\n".join([i + "\t /del" + i for i in trains])\
+					  + "\n" + lS(TO_DELETE_INFO_MESSAGE)
 			else: 
 				msg = lS(PERSONAL_LIST_IS_EMPTY_MESSAGE)
 			bot.sendMessage(chat_id=chat_id
@@ -135,17 +140,31 @@ class MainBot:
 			,key_markup=MMKM
 			# ,markdown=True
 			)
+		elif re.fullmatch(r"^/del[0-9]+[A-Za-z]?$", message):
+			train = message[4:]
+			trains = subs.getEntry(chat_id,"trains")
+			if train in trains:
+				subs.setEntry(chat_id,"trains",list(filter(train.__ne__,trains)))
+				msg = lS(TRAIN_DELETED_MESSAGE).format(train)
+			else:
+				msg = lS(TRAIN_NOT_ON_LIST_MESSAGE).format(train)
+
+			bot.sendMessage(chat_id=chat_id
+				,message=msg
+				,key_markup=MMKM
+				# ,markdown=True
+				)
 		elif re.fullmatch(r"^[0-9]+[A-Za-z]?$", message):
 			train = message.upper()
 			subs.setEntry(chat_id,"trains",train,append=True)
 			bot.sendMessage(chat_id=chat_id
-				,message="Train {0} has been added to your personal list".format(train)
+				,message=TRAIN_ADDED_MESSAGE.format(train)
 				,key_markup=MMKM
 				# ,markdown=True
 				)
 		else:
 			bot.sendMessage(chat_id=chat_id,
-				message="Unknown command!"
+				message=UNKNOWN_COMMAND_MESSAGE
 				,key_markup=MMKM
 				)
 
