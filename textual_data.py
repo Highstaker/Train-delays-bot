@@ -22,6 +22,11 @@ SUBSCRIBERS_DATABASE_PATH = path.join(SCRIPT_FOLDER, "databases/users.save")
 #############
 
 START_MESSAGE = "Welcome! Type /help to get help."
+PERSONAL_LIST_MESSAGE = "Trains you've selected are:"
+PERSONAL_LIST_IS_EMPTY_MESSAGE = "Your list of trains is empty! Add some by typing the train number."
+SECONDS_SINCE_LAST_UPDATE_MESSAGE = "Seconds since last update: {0}"
+USER_TRAINS_NOT_FOUND_MESSAGE = """Could not find any data on trains from your list.
+Maybe they're not off-schedule now?"""
 
 ################
 ### BUTTONS#####
@@ -31,6 +36,8 @@ ABOUT_BUTTON = "ℹ️ About"
 HELP_BUTTON = "⁉️" + "Help"
 OTHER_BOTS_BUTTON = "👾 My other bots"
 GET_FULL_TABLE_BUTTON = "Get full table"
+GET_USER_TRAINS_LIST_BUTTON = "My train list"
+GET_USER_TRAINS_DELAYS_BUTTON = "Get delays for my trains"
 
 
 ##################

@@ -5,9 +5,10 @@
 from python_version_check import check_version
 check_version((3, 4, 3))
 
-VERSION_NUMBER = (0, 0, 1)
+VERSION_NUMBER = (0, 0, 2)
 
 from time import time
+import re
 
 from telegramHigh import TelegramHigh
 from textual_data import *
@@ -28,6 +29,7 @@ FILE_UPDATE_PERIOD = 60
 INITIAL_SUBSCRIBER_PARAMS = {"lang": "EN",  # bot's langauge
 							 "subscribed": 0, # has the user subscribed?
 							 "last_update_time" : 0,
+							 "trains" : [] 
 							 }
 
 
@@ -51,16 +53,12 @@ class MainBot:
 		self.bot.start(processingFunction=self.processUpdate, periodicFunction=self.periodicRoutine)
 
 	def periodicRoutine(self):
-
-		if time() - self.last_update_time >FILE_UPDATE_PERIOD:
-
+		if time() - self.last_update_time > FILE_UPDATE_PERIOD:
 			lh.warning("Updating the trains data!")
 			data = delays_scraper.get_data()
-
 			if data:
 				self.data = data
 				self.last_update_time = time()
-
 
 	def processUpdate(self, u):
 		bot = self.bot
@@ -78,6 +76,26 @@ class MainBot:
 		lS = LS.languageSupport
 		allv = LS.allVariants
 		MMKM = lS(getMainMenu(subs.getEntry(chat_id=chat_id, param="subscribed")))
+
+		def sendTable(user=None):
+			"""
+			Sends a table of delays
+
+			:param user: a chat_id to read train numbers from. If None, returns the whole current table.
+			"""
+			table = self.getDelaysTable(user)
+
+			if table:
+				since_last_update = time()-self.last_update_time
+				msg = table + "\n" + lS(SECONDS_SINCE_LAST_UPDATE_MESSAGE).format(int(since_last_update))
+			else:
+				msg = lS(USER_TRAINS_NOT_FOUND_MESSAGE)
+
+			bot.sendMessage(chat_id=chat_id
+				,message=msg
+				,key_markup=MMKM
+				# ,markdown=True
+				)
 
 		if message == "/start":
 			bot.sendMessage(chat_id=chat_id
@@ -103,11 +121,25 @@ class MainBot:
 				,markdown=True
 				)
 		elif message == "/get" or message == lS(GET_FULL_TABLE_BUTTON):
-			table = self.getDelaysTable()
-			since_last_update = time()-self.last_update_time
-			msg = table + "\n" + "Seconds since last update: {0}".format(int(since_last_update))
+			sendTable(user=None)
+		elif message == "/getmy" or message == lS(GET_USER_TRAINS_DELAYS_BUTTON):
+			sendTable(user=chat_id)
+		elif message == "/mylist" or message == lS(GET_USER_TRAINS_LIST_BUTTON):
+			trains = subs.getEntry(chat_id,"trains")
+			if trains:
+				msg = lS(PERSONAL_LIST_MESSAGE) + "\n" + "\n".join(trains)
+			else: 
+				msg = lS(PERSONAL_LIST_IS_EMPTY_MESSAGE)
 			bot.sendMessage(chat_id=chat_id
-				,message=msg
+			,message=msg
+			,key_markup=MMKM
+			# ,markdown=True
+			)
+		elif re.fullmatch(r"^[0-9]+[A-Za-z]?$", message):
+			train = message.upper()
+			subs.setEntry(chat_id,"trains",train,append=True)
+			bot.sendMessage(chat_id=chat_id
+				,message="Train {0} has been added to your personal list".format(train)
 				,key_markup=MMKM
 				# ,markdown=True
 				)
@@ -117,12 +149,24 @@ class MainBot:
 				,key_markup=MMKM
 				)
 
-	def getDelaysTable(self):
+	def getDelaysTable(self, user=None):
+		"""
+		Returns a text representation of delays table
+		:param user: a chat_id to read train numbers from. If None, returns the whole current table.
+		:return: string table
+		"""
 		data = self.data
 
-		result = ""
+		#Inits
+		result, user_trains = "", []
+
+		if user:
+			user_trains = self.userparams.getEntry(user,"trains")
+
 		for train in data:
-			result = result + "\t".join(train) + "\n"
+			# check data for each train
+			if not user or (user and train[0] in user_trains):
+				result = result + "\t".join(train) + "\n"
 
 		return result
 

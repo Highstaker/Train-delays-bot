@@ -44,10 +44,10 @@ def get_data():
 
 			# print(text)#debug
 
-			parse = list(re.findall(r"(^[0-9]+[A-Z]?)(.*)(\+[0-9]+|-[0-9]+)$", text))
+			parse = list(re.findall(r"(^[0-9]+[A-Za-z]?)(.*)(\+[0-9]+|-[0-9]+)$", text))
 
 			try:
-				parse = [i.strip(" \n\t\r") for i in parse[0]]
+				parse = [i.strip(" \n\t\r*") for i in parse[0]]
 			except IndexError:
 				return
 

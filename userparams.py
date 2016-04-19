@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import pickle
 import logging
+import json
 from copy import deepcopy
 
 class SubscribersHandler:
@@ -21,8 +22,12 @@ class SubscribersHandler:
 		Loads subscribers from a file. Show warning if it doesn't exist.
 		"""
 		try:
-			with open(self.subscribers_backup_filename, 'rb') as f:
-				self.subscribers = pickle.load(f)
+			with open(self.subscribers_backup_filename, 'r') as f:
+				# self.subscribers = pickle.load(f)
+				subscribers = json.loads(f.read())
+				# JSON saves chat_id as a string. Need to recover it as a number key instead.
+				for i in subscribers.keys():
+					self.subscribers[int(i)] = subscribers[i]
 				logging.warning(("self.subscribers", self.subscribers))
 		except FileNotFoundError:
 			logging.warning("Subscribers backup file not found. Starting with empty list!")
@@ -31,8 +36,11 @@ class SubscribersHandler:
 		"""
 		Saves a subscribers list to file
 		"""
-		with open(self.subscribers_backup_filename, 'wb') as f:
-			pickle.dump(self.subscribers, f, pickle.HIGHEST_PROTOCOL)
+		with open(self.subscribers_backup_filename, 'w') as f:
+			dump = json.dumps(self.subscribers)
+			print(dump)#debug
+			f.write(dump)
+			# pickle.dump(self.subscribers, f, pickle.HIGHEST_PROTOCOL)
 
 	def initializeUser(self, chat_id, force=False, params=None, save=True):
 		"""
@@ -43,6 +51,8 @@ class SubscribersHandler:
 		:param save: saves the subscribers list to file if True and if initialization took place
 		:return: None
 		"""
+		# print("self.subscribers",self.subscribers)#debug
+		# print("type chat_id", type(chat_id))#debug
 		if not (chat_id in self.subscribers.keys()) or force:
 			# T T = T
 			# F T = T
@@ -75,7 +85,7 @@ class SubscribersHandler:
 		:return: None
 		"""
 		if append:
-			self.subscribers[chat_id][param] += value
+			self.subscribers[chat_id][param].append(value)
 		else:
 			self.subscribers[chat_id][param] = value
 		if save:
