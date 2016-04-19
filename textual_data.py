@@ -21,32 +21,47 @@ SUBSCRIBERS_DATABASE_PATH = path.join(SCRIPT_FOLDER, "databases/users.save")
 # TEXTS######
 #############
 
-START_MESSAGE = "Welcome! Type /help to get help."
-PERSONAL_LIST_MESSAGE = "Trains you've selected are:"
-PERSONAL_LIST_IS_EMPTY_MESSAGE = "Your list of trains is empty! Add some by typing the train number."
-SECONDS_SINCE_LAST_UPDATE_MESSAGE = "Seconds since last update: {0}"
-USER_TRAINS_NOT_FOUND_MESSAGE = """Could not find any data on trains from your list.
-Maybe they're not off-schedule now?"""
-TRAIN_ADDED_MESSAGE = "Train {0} has been added to your personal list"
-TRAIN_DELETED_MESSAGE = "Train {0} has been deleted from your personal list"
-TRAIN_NOT_ON_LIST_MESSAGE = "Train {0} is not in your personal list"
-TO_DELETE_INFO_MESSAGE = "To delete a train from your list, press the respective /delXXXXX link"
-FULL_TABLE_HEADER = "Full table"
-PERSONAL_TABLE_HEADER = "Your personal table"
+START_MESSAGE = {"EN": "Welcome! Type /help to get help.",
+"RU": "Добро пожаловать! Наберите /help для получения помощи."}
+PERSONAL_LIST_MESSAGE = {"EN":"Trains you've selected are:",
+"RU": "Вы выбрали следующие поезда:"}
+PERSONAL_LIST_IS_EMPTY_MESSAGE = {"EN":"Your list of trains is empty! Add some by typing the train number.",
+"RU": "Ваш список поездов пуст! Введите номер поезда, чтобы добавить его в список."}
+SECONDS_SINCE_LAST_UPDATE_MESSAGE = {"EN": "Seconds since last update: {0}",
+"RU": "Секунд прошло с момента последнего обновления данных: {0}"}
+USER_TRAINS_NOT_FOUND_MESSAGE = {"EN": """Could not find any data on trains from your list.
+Maybe they're not off-schedule now?""",
+"RU": """Нет данных по поездам в вашем списке. Возможно они идут по расписанию или не существуют"""}
+TRAIN_ADDED_MESSAGE = {"EN": "Train {0} has been added to your personal list",
+"RU": "Поезд номер {0} добавлен в ваш личный список."}
+TRAIN_DELETED_MESSAGE = {"EN": "Train {0} has been deleted from your personal list",
+"RU": "Поезд номер {0} удалён из вашего личного списка."}
+TRAIN_NOT_ON_LIST_MESSAGE = {"EN": "Train {0} is not in your personal list",
+"RU": "Поезд номер {0} отсутствует в вашем личном списке."}
+TO_DELETE_INFO_MESSAGE = {"EN": "To delete a train from your list, press the respective /delXXXXX link",
+"RU": "Для удаления поезда нажмите на соответствующую команду формата /delXXXXX"}
+FULL_TABLE_HEADER = {"EN": "Full table",
+"RU":"Полная таблица"}
+PERSONAL_TABLE_HEADER = {"EN": "Your personal table",
+"RU":"Ваша личная таблица"}
 
-UNKNOWN_COMMAND_MESSAGE = "Unknown command!"
+UNKNOWN_COMMAND_MESSAGE = {"EN": "Unknown command!",
+"RU":"Неизвестная команда"}
+
 
 ################
 ### BUTTONS#####
 ################
 
-ABOUT_BUTTON = "ℹ️ About"
-HELP_BUTTON = "⁉️" + "Help"
-OTHER_BOTS_BUTTON = "👾 My other bots"
-GET_FULL_TABLE_BUTTON = "Get full table"
-GET_USER_TRAINS_LIST_BUTTON = "My train list"
-GET_USER_TRAINS_DELAYS_BUTTON = "Get delays for my trains"
+EN_LANG_BUTTON = "🇬🇧 EN"
+RU_LANG_BUTTON = "🇷🇺 RU"
 
+ABOUT_BUTTON = {"EN":"ℹ️ About", "RU": "ℹ️ О программе"}
+OTHER_BOTS_BUTTON = {"EN":"👾 My other bots", "RU": "👾 Другие мои боты"}
+HELP_BUTTON = {"EN":"⁉️" + "Help", "RU": "⁉️ Помощь"}
+GET_FULL_TABLE_BUTTON = {"EN": "Get full table", "RU": "Полное расписание опозданий"}
+GET_USER_TRAINS_LIST_BUTTON = {"EN": "My train list", "RU": "Мой список поездов"}
+GET_USER_TRAINS_DELAYS_BUTTON = {"EN": "Get delays for my trains", "RU": "Расписание опозданий моих поездов"}
 
 ##################
 # BIG TEXTS#######

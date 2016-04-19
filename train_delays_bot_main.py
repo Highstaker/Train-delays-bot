@@ -5,7 +5,7 @@
 from python_version_check import check_version
 check_version((3, 4, 3))
 
-VERSION_NUMBER = (0, 0, 3)
+VERSION_NUMBER = (0, 0, 4)
 
 from time import time
 import re
@@ -76,7 +76,8 @@ class MainBot:
 		LS = LanguageSupport(subs.getEntry(chat_id=chat_id, param="lang"))
 		lS = LS.languageSupport
 		allv = LS.allVariants
-		MMKM = lS(getMainMenu(subs.getEntry(chat_id=chat_id, param="subscribed")))
+		MM = getMainMenu(subs.getEntry(chat_id=chat_id, param="subscribed"))
+		MMKM = lS(MM)
 
 		def sendTable(user=None):
 			"""
@@ -88,8 +89,8 @@ class MainBot:
 
 			if table:
 				since_last_update = time()-self.last_update_time
-				msg = (PERSONAL_TABLE_HEADER if user else FULL_TABLE_HEADER) + "\n" \
-				+ "Current time: " + datetime.now().strftime("%H:%M") + "\n\n" \
+				msg = (lS(PERSONAL_TABLE_HEADER) if user else lS(FULL_TABLE_HEADER) ) + "\n" \
+				+ lS("Current time: ") + datetime.now().strftime("%H:%M") + "\n\n" \
 				+ table \
 				+ "\n" + lS(SECONDS_SINCE_LAST_UPDATE_MESSAGE).format(int(since_last_update))
 			else:
@@ -106,13 +107,13 @@ class MainBot:
 				,message=lS(START_MESSAGE)
 				,key_markup=MMKM
 				)
-		elif message == "/help" or message == HELP_BUTTON:
+		elif message == "/help" or message == lS(HELP_BUTTON):
 			bot.sendMessage(chat_id=chat_id
 				,message=lS(HELP_MESSAGE)
 				,key_markup=MMKM
 				,markdown=True
 				)
-		elif message == "/about" or message == ABOUT_BUTTON:
+		elif message == "/about" or message == lS(ABOUT_BUTTON):
 			bot.sendMessage(chat_id=chat_id
 				,message=lS(ABOUT_MESSAGE).format(".".join([str(i) for i in VERSION_NUMBER]))
 				,key_markup=MMKM
@@ -158,13 +159,28 @@ class MainBot:
 			train = message.upper()
 			subs.setEntry(chat_id,"trains",train,append=True)
 			bot.sendMessage(chat_id=chat_id
-				,message=TRAIN_ADDED_MESSAGE.format(train)
+				,message=lS(TRAIN_ADDED_MESSAGE).format(train)
 				,key_markup=MMKM
 				# ,markdown=True
 				)
+			
+		elif message == RU_LANG_BUTTON:
+			subs.setEntry(chat_id, "lang", 'RU')
+			LS = LanguageSupport("RU")
+			bot.sendMessage(chat_id=chat_id
+							, message="Сообщения бота будут отображаться на русском языке."
+							, key_markup=LS.languageSupport(MM)
+							)
+		elif message == EN_LANG_BUTTON:
+			subs.setEntry(chat_id, "lang", 'EN')
+			LS = LanguageSupport("EN")
+			bot.sendMessage(chat_id=chat_id
+							, message="Bot messages will be shown in English."
+							, key_markup=LS.languageSupport(MM)
+							)
 		else:
 			bot.sendMessage(chat_id=chat_id,
-				message=UNKNOWN_COMMAND_MESSAGE
+				message=lS(UNKNOWN_COMMAND_MESSAGE)
 				,key_markup=MMKM
 				)
 
