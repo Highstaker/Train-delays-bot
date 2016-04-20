@@ -44,6 +44,22 @@ FULL_TABLE_HEADER = {"EN": "Full table",
 "RU":"Полная таблица"}
 PERSONAL_TABLE_HEADER = {"EN": "Your personal table",
 "RU":"Ваша личная таблица"}
+TABLE_ENTRY_BEGINNING_MESSAGE = {"EN": "The train {0}",
+"RU": "Поезд {0}"}
+TABLE_ENTRY_ONOFFTIME_APPENDIX = {"EN": " {0} minutes {1}",
+"RU": " на {0} минут {1}"}
+ARRIVED_AT_APPENDIX = {"EN": " arrived at the {0} station",
+"RU": " прибыл на станцию {0}"}
+DEPARTED_FROM_APPENDIX = {"EN": " departed from the {0} station",
+"RU": " отправился со станции {0}"}
+COMES_EARLY_APPENDIX = {"EN": " *early*",
+"RU": " *раньше*"}
+COMES_LATE_APPENDIX = {"EN": " _late_",
+"RU": " _с опозданием_"}
+COMES_ONTIME_APPENDIX = {"EN": " `ON TIME`",
+"RU": " `вовремя`"}
+RED_LIGHT_APPENDIX = {"EN": " *Warning!* The train has currently stopped on red light!",
+"RU": "*Внимание!* Поезд остановился на стоп-сигнале!"}
 
 UNKNOWN_COMMAND_MESSAGE = {"EN": "Unknown command!",
 "RU":"Неизвестная команда"}

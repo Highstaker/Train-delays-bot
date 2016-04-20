@@ -5,7 +5,7 @@
 from python_version_check import check_version
 check_version((3, 4, 3))
 
-VERSION_NUMBER = (0, 0, 4)
+VERSION_NUMBER = (0, 0, 5)
 
 from time import time
 import re
@@ -79,13 +79,50 @@ class MainBot:
 		MM = getMainMenu(subs.getEntry(chat_id=chat_id, param="subscribed"))
 		MMKM = lS(MM)
 
+		def getDelaysTable(user=None, formatted=False):
+			"""
+			Returns a text representation of delays table
+			:param user: a chat_id to read train numbers from. If None, returns the whole current table.
+			:return: string table
+			"""
+			data = self.data
+
+			print("data",data)#debug
+
+			#Inits
+			result, user_trains = "", []
+
+			if user:
+				user_trains = self.userparams.getEntry(user,"trains")
+
+			for train in data:
+				# check data for each train
+				if not user or (user and train["number"] in user_trains):
+					if not formatted:
+						result = result + "\t".join([i for i in train.values() if isinstance(i, str)]) + "\n"
+					else:
+						print("train",train)#debug
+						result = result + lS(TABLE_ENTRY_BEGINNING_MESSAGE).format(train["number"])\
+						+ (lS(DEPARTED_FROM_APPENDIX).format(train["station"]) if train["departed"] else lS(ARRIVED_AT_APPENDIX).format(train["station"]))\
+							+ (lS(COMES_ONTIME_APPENDIX) if train["delay"][1:] == "0"
+								else lS(TABLE_ENTRY_ONOFFTIME_APPENDIX).format(
+							train["delay"].replace("-","").replace("+",""),
+							lS(COMES_EARLY_APPENDIX) if train["delay"][0] == "-" else lS(COMES_LATE_APPENDIX)
+							)
+							)\
+							+ (lS(RED_LIGHT_APPENDIX) if train["red_light"] else "")\
+							+ "\n"
+
+			return result
+
 		def sendTable(user=None):
 			"""
 			Sends a table of delays
 
 			:param user: a chat_id to read train numbers from. If None, returns the whole current table.
 			"""
-			table = self.getDelaysTable(user)
+			table = getDelaysTable(user, formatted=True) 
+			# + "\n\n\n" + getDelaysTable(user, formatted=False)#debug
 
 			if table:
 				since_last_update = time()-self.last_update_time
@@ -99,7 +136,7 @@ class MainBot:
 			bot.sendMessage(chat_id=chat_id
 				,message=msg
 				,key_markup=MMKM
-				# ,markdown=True
+				,markdown=True
 				)
 
 		if message == "/start":
@@ -183,27 +220,6 @@ class MainBot:
 				message=lS(UNKNOWN_COMMAND_MESSAGE)
 				,key_markup=MMKM
 				)
-
-	def getDelaysTable(self, user=None):
-		"""
-		Returns a text representation of delays table
-		:param user: a chat_id to read train numbers from. If None, returns the whole current table.
-		:return: string table
-		"""
-		data = self.data
-
-		#Inits
-		result, user_trains = "", []
-
-		if user:
-			user_trains = self.userparams.getEntry(user,"trains")
-
-		for train in data:
-			# check data for each train
-			if not user or (user and train[0] in user_trains):
-				result = result + "\t".join(train) + "\n"
-
-		return result
 
 def main():
 	MainBot(BOT_TOKEN)
