@@ -1,8 +1,13 @@
 #!/usr/bin/python3 -u
 # -*- coding: utf-8 -*-
 from os import path
+import sys
 
-SCRIPT_FOLDER = path.dirname(path.realpath(__file__))
+if getattr(sys, 'frozen', False):
+	# frozen
+	SCRIPT_FOLDER = path.dirname(sys.executable)
+else:
+	SCRIPT_FOLDER = path.dirname(path.realpath(__file__))
 
 ##############
 # FILENAMES###

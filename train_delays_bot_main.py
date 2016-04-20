@@ -5,7 +5,7 @@
 from python_version_check import check_version
 check_version((3, 4, 3))
 
-VERSION_NUMBER = (0, 0, 5)
+VERSION_NUMBER = (0, 0, 6)
 
 from time import time
 import re
