@@ -5,7 +5,7 @@
 from python_version_check import check_version
 check_version((3, 4, 3))
 
-VERSION_NUMBER = (0, 0, 6)
+VERSION_NUMBER = (0, 0, 7)
 
 from time import time
 import re
@@ -87,6 +87,7 @@ class MainBot:
 			"""
 			data = self.data
 
+			train_data = data["trains"]
 
 			#Inits
 			result, user_trains = "", []
@@ -94,7 +95,7 @@ class MainBot:
 			if user:
 				user_trains = self.userparams.getEntry(user,"trains")
 
-			for train in data:
+			for train in train_data:
 				# check data for each train
 				if not user or (user and train["number"] in user_trains):
 					if not formatted:
@@ -119,12 +120,13 @@ class MainBot:
 
 			:param user: a chat_id to read train numbers from. If None, returns the whole current table.
 			"""
-			table = getDelaysTable(user, formatted=True) 
+			table = getDelaysTable(user, formatted=True)
+			cur_time = self.data["time"]
 
 			if table:
 				since_last_update = time()-self.last_update_time
 				msg = (lS(PERSONAL_TABLE_HEADER) if user else lS(FULL_TABLE_HEADER) ) + "\n" \
-				+ lS("Current time: ") + datetime.now().strftime("%H:%M") + "\n\n" \
+				+ lS("Current time: ") + cur_time + "\n\n" \
 				+ table \
 				+ "\n" + lS(SECONDS_SINCE_LAST_UPDATE_MESSAGE).format(int(since_last_update))
 			else:

@@ -4,12 +4,6 @@ import requests
 from bs4 import BeautifulSoup as bs
 import re
 
-# class TrainDelayScraper:
-# 	"""docstring for TrainDelayScraper"""
-# 	def __init__(self):
-# 		super(TrainDelayScraper, self).__init__()
-
-	# @staticmethod
 from traceback_printer import full_traceback
 
 
@@ -61,6 +55,16 @@ def get_data():
 		table = soup.findAll(name="table", id="GridViewETNS_S")[0]
 		for row in table.findAll(name="tr"):
 			filter_row(row)
+
+		#extracting time
+		cur_time = soup.findAll(name="span",id='LabelTime')[0]
+		for br in cur_time.findAll("br"):
+			br.replace_with("\n")
+		cur_time = cur_time.text.split("\n")[0]
+
+		print(cur_time)#debug
+
+		result = {"time": cur_time, "trains": result}
 
 	else:
 		result = None
