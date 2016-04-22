@@ -1,6 +1,7 @@
 #!/bin/bash
 
 INTERPRETER_NAME="train_delays_bot_python3"
+RUN_FILE_NAME="run_train_delays_bot.sh"
 
 # Go to script's folder
 cd `dirname $0`
@@ -33,8 +34,8 @@ child=\$!
 wait \"\$child\"
 
 exit 0
-" > run.sh
+" > $RUN_FILE_NAME
 
-chmod +x run.sh
+chmod +x $RUN_FILE_NAME
 
 exit 0
