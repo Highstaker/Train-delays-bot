@@ -87,7 +87,6 @@ class MainBot:
 			"""
 			data = self.data
 
-			print("data",data)#debug
 
 			#Inits
 			result, user_trains = "", []
@@ -101,7 +100,6 @@ class MainBot:
 					if not formatted:
 						result = result + "\t".join([i for i in train.values() if isinstance(i, str)]) + "\n"
 					else:
-						print("train",train)#debug
 						result = result + lS(TABLE_ENTRY_BEGINNING_MESSAGE).format(train["number"])\
 						+ (lS(DEPARTED_FROM_APPENDIX).format(train["station"]) if train["departed"] else lS(ARRIVED_AT_APPENDIX).format(train["station"]))\
 							+ (lS(COMES_ONTIME_APPENDIX) if train["delay"][1:] == "0"
@@ -122,7 +120,6 @@ class MainBot:
 			:param user: a chat_id to read train numbers from. If None, returns the whole current table.
 			"""
 			table = getDelaysTable(user, formatted=True) 
-			# + "\n\n\n" + getDelaysTable(user, formatted=False)#debug
 
 			if table:
 				since_last_update = time()-self.last_update_time

@@ -38,7 +38,6 @@ class SubscribersHandler:
 		"""
 		with open(self.subscribers_backup_filename, 'w') as f:
 			dump = json.dumps(self.subscribers)
-			print(dump)#debug
 			f.write(dump)
 			# pickle.dump(self.subscribers, f, pickle.HIGHEST_PROTOCOL)
 
@@ -51,8 +50,6 @@ class SubscribersHandler:
 		:param save: saves the subscribers list to file if True and if initialization took place
 		:return: None
 		"""
-		# print("self.subscribers",self.subscribers)#debug
-		# print("type chat_id", type(chat_id))#debug
 		if not (chat_id in self.subscribers.keys()) or force:
 			# T T = T
 			# F T = T

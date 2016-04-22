@@ -27,43 +27,17 @@ def get_data():
 
 		content = req.content
 		soup = bs(content, "html.parser")
-		# print("content", content)#debug
-
-		# print(soup.findAll(name="table", id="GridViewETNS_N"))#debug
 
 		def filter_row(row):
-
-			# print("row",row.findAll(name="td"))#debug
 
 			# 0 - train number, 1 - asterik, if present, te trin is AT the station, 2 - station name
 			# 3 - B stoplight, asterisks, delay
 			row_parse = [i.text.strip(" \n\r\t").replace(u"\xa0", " ") for i in row.findAll(name="td")]
 			
-			# print("row_parse",row_parse)#debug
-			# text = row.text.strip(" \n\r\t").replace(u"\xa0", " ")
-
-			# #add missing space before the delay number
-			# plus_index = text.rfind('+')
-			# minus_index = text.rfind('-')
-			# if plus_index != -1:
-			# 	text = text[:plus_index] + " " + text[plus_index:]
-			# elif minus_index != -1:
-			# 	text = text[:minus_index] + " " + text[minus_index:]
-
-			# # remove empty strings
-			# parse = list(filter(bool, text.split(" ")))
-
-
-			# text = text.replace(" ","")
-			# print(text)#debug
-
-			# parse = list(re.findall(r"(^[0-9]+[A-Za-z]?)(\*?)([^\*]*)(\**)(B?)(\+[0-9]+|-[0-9]+)$", text))
-
 			try:
 				# parse = [i.strip(" \n\t\r") for i in parse[0]]
 
 				delay_parse = list(re.findall(r"(\**)(B?)(\+[0-9]+|-[0-9]+)$", row_parse[3].strip(" \n\t\r").replace(" ","")))[0]
-				# print("delay_parse",delay_parse)#debug
 				
 				parse_dict = dict(number=row_parse[0].strip(" \n\t\r"),
 				  departed=not bool(row_parse[1].strip(" \n\t\r")),
