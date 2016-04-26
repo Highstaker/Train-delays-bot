@@ -1,0 +1,6 @@
+help - get help
+about - get general data about the bot
+otherbots - get info about my other bots
+get - get a full timetable for trains that are currently running
+getmy - get timetable only for trains that are on your list
+mylist - show your list of trains
