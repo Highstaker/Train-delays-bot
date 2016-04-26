@@ -96,11 +96,19 @@ This bot uses the python-telegram-bot library.
 https://github.com/leandrotoledo/python-telegram-bot
 """
 
-HELP_MESSAGE = """Help message"""
-
 OTHER_BOTS_MESSAGE = """*My other bots*:
 
 @OmniCurrencyExchangeBot: a currency converter bot supporting past rates and graphs.
 
 @multitran\_bot: a Russian-Whichever dictionary with support of 9 languages. Has transcriptions for English words.
 """
+
+HELP_MESSAGE = """This bot shows info on train delays in Stockholm.
+To get a full table press the *{0}* button.
+To add a train number to your personal list, *type that train number* in chat.
+To see the list of your trains, press *{1}* button.
+To see the timetable of delays only for these trains, press the *{2}* button.
+""".format(GET_FULL_TABLE_BUTTON['EN'],
+	GET_USER_TRAINS_LIST_BUTTON['EN'],
+	GET_USER_TRAINS_DELAYS_BUTTON['EN']
+	)

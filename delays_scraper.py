@@ -62,8 +62,6 @@ def get_data():
 			br.replace_with("\n")
 		cur_time = cur_time.text.split("\n")[0]
 
-		print(cur_time)#debug
-
 		result = {"time": cur_time, "trains": result}
 
 	else:

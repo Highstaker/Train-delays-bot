@@ -9,7 +9,6 @@ VERSION_NUMBER = (0, 0, 7)
 
 from time import time
 import re
-from datetime import datetime
 
 from telegramHigh import TelegramHigh
 from textual_data import *
